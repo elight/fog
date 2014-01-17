@@ -10,7 +10,9 @@ module Fog
       provider = attributes.delete(:provider).to_s.downcase.to_sym
 
       if self.providers.include?(provider)
-        require "fog/#{provider}/network"
+        if provider == :openstack
+          require "fog/#{provider}/network"
+        end
         return Fog::Orchestration.const_get(Fog.providers[provider]).new(attributes)
       end
 
